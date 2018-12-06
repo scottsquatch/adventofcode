@@ -31,6 +31,12 @@ public class FabricOverlapCalculator
 
 				System.out.println("The square inches of fabric which has overlapping claims is " + santasFabric.getOverlap());
 
+				System.out.println("The list of claims which do not overlap is: ");
+				for (String id : santasFabric.getNonOverlappingClaims())
+				{
+					System.out.println(id);
+				}
+
 			}
 			catch (FileNotFoundException e)
 			{
