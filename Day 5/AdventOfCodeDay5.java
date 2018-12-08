@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
 import java.io.FileReader;
+import java.util.Collection;
 
 public class AdventOfCodeDay5
 {
@@ -58,12 +60,42 @@ public class AdventOfCodeDay5
     {
         String reducedPolymer = new PolymerReducer().reducePolymer(polymer);
 
-        System.out.println("Reduced polymer: " + reducedPolymer);
         System.out.println("Size: " + reducedPolymer.length());
     }
 
     private static void solveProblem2(String polymer)
     {
-        // TODO
+        int minimumPolymerLength = Integer.MAX_VALUE;
+        Collection<Character> unitTypes = getUnitTypes(polymer);
+        for (Character unitType : unitTypes)
+        {
+            System.out.println("Removing " + unitType + " from polymer.");
+            String reducedPolymer = new PolymerReducer(unitType).reducePolymer(polymer);
+
+            System.out.println("Reduced polymer size " + reducedPolymer.length());
+            if (reducedPolymer.length() < minimumPolymerLength)
+            {
+                minimumPolymerLength = reducedPolymer.length();
+            }
+        }
+
+        System.out.println("The minimum possible polymer size is " + minimumPolymerLength);
+    }
+
+    private static Collection<Character> getUnitTypes(String polymerText)
+    {
+        HashSet<Character> unitTypes = new HashSet<Character>();
+
+        for (int i = 0; i < polymerText.length(); i++)
+        {
+            Character c = polymerText.charAt(i);
+            if (!unitTypes.contains(c) &&
+                !unitTypes.contains(Character.toUpperCase(c)))
+            {
+                unitTypes.add(c);
+            }
+        }
+
+        return unitTypes;
     }
 }

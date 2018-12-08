@@ -9,6 +9,18 @@ import java.util.Collection;
  */
 public class PolymerReducer
 {
+    private Character mPolymerTypeToIgnore;
+
+    public PolymerReducer()
+    {
+        mPolymerTypeToIgnore = null;
+    }
+
+    public PolymerReducer(Character typeToIgnore)
+    {
+        mPolymerTypeToIgnore = typeToIgnore;
+    }
+
     public String reducePolymer(String polymerText)
     {
         if (polymerText.length() < 2)
@@ -26,7 +38,14 @@ public class PolymerReducer
             while (index < polymerText.length())
             {
                 Character currentUnit = polymerText.charAt(index);
-                if (!polymer.isEmpty() &&
+                if (mPolymerTypeToIgnore != null &&
+                    (currentUnit == mPolymerTypeToIgnore ||
+                     Character.toUpperCase(currentUnit) == mPolymerTypeToIgnore ||
+                     Character.toUpperCase(mPolymerTypeToIgnore) == currentUnit))
+                {
+                    // Do nothing 
+                }
+                else if (!polymer.isEmpty() &&
                     doUnitsReact(currentUnit, polymer.peekLast()))
                 {
                     // Since we racted with the last element of the polymer, we need to remove it

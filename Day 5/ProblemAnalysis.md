@@ -36,3 +36,9 @@ private:
 PolymerReactor
 public:
     String reducePolymer(String polymer)
+
+## Problem 2
+### Changes
+* Add a skip unit funcationlaity to PolarityReducer. 
+* Then change the algorithm to ignore the unit if it is equal to the unit type
+* In "driver" code, iterate over all letters of the alphabet and see which one produces the minimmum value
