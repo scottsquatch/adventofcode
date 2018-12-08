@@ -27,6 +27,11 @@ public class SleepLog
         return mTotalMinutesSlept;
     }
 
+    public int getLargestSleepInMinute()
+    {
+        return mLargestSleepInMinute;
+    }
+
     // Add sleep time starting from startMinute to endMinute, exclusive
     public void addSleepTime(int startMinute, int endMinute)
     {

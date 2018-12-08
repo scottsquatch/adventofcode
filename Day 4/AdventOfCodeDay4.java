@@ -45,9 +45,17 @@ public class AdventOfCodeDay4
 				GuardSleepLogs sleepLogs = new GuardSleepLogs(pq);
 				SleepyGuardInfo sleepiestGuard = sleepLogs.getSleepiestGuard();
 
+				System.out.println("Quertion 1");
 				System.out.println("Sleepiest Guard ID: " + sleepiestGuard.getGuardId());
 				System.out.println("Sleepiest minute: " + sleepiestGuard.getSleepiesMinute());
 				System.out.println("Problem Answer: " + (sleepiestGuard.getGuardId() *sleepiestGuard.getSleepiesMinute()));
+
+				SleepyGuardInfo sleepiestGuard2 = sleepLogs.getSleepyGuardUsingMostTimeAsleepInSleepiestMinute();
+
+				System.out.println("Quertion 2");
+				System.out.println("Sleepiest Guard ID: " + sleepiestGuard2.getGuardId());
+				System.out.println("Sleepiest minute: " + sleepiestGuard2.getSleepiesMinute());
+				System.out.println("Problem Answer: " + (sleepiestGuard2.getGuardId() *sleepiestGuard2.getSleepiesMinute()));
 				input.close();
 			}
 			catch (FileNotFoundException e)

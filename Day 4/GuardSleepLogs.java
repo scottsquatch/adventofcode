@@ -88,6 +88,7 @@ public class GuardSleepLogs
         int sleepiestGuardId = 0;
         int highestSleepTime = Integer.MIN_VALUE;
         int sleepiestMinute = Integer.MIN_VALUE;
+        int timeAsleepInSleepiestMinute = Integer.MIN_VALUE;
         for (int id : mSleepLogsByGuardId.keySet())
         {
             SleepLog currentSleepLog = mSleepLogsByGuardId.get(id);
@@ -97,10 +98,35 @@ public class GuardSleepLogs
                 sleepiestGuardId = id;
                 highestSleepTime = currentSleepLog.getTotalMinutesAsleep();
                 sleepiestMinute = currentSleepLog.getSleepiestMinute();
+                timeAsleepInSleepiestMinute = currentSleepLog.getLargestSleepInMinute();
             }
         }
 
-        SleepyGuardInfo info = new SleepyGuardInfo(sleepiestGuardId, highestSleepTime, sleepiestMinute);
+        SleepyGuardInfo info = new SleepyGuardInfo(sleepiestGuardId, highestSleepTime, sleepiestMinute, timeAsleepInSleepiestMinute);
+
+        return info;
+    }
+
+    public SleepyGuardInfo getSleepyGuardUsingMostTimeAsleepInSleepiestMinute()
+    {
+        int sleepiestGuardId = 0;
+        int highestSleepTime = Integer.MIN_VALUE;
+        int sleepiestMinute = Integer.MIN_VALUE;
+        int timeAsleepInSleepiestMinute = Integer.MIN_VALUE;
+        for (int id : mSleepLogsByGuardId.keySet())
+        {
+            SleepLog currentSleepLog = mSleepLogsByGuardId.get(id);
+
+            if (currentSleepLog.getLargestSleepInMinute() > timeAsleepInSleepiestMinute)
+            {
+                sleepiestGuardId = id;
+                highestSleepTime = currentSleepLog.getTotalMinutesAsleep();
+                sleepiestMinute = currentSleepLog.getSleepiestMinute();
+                timeAsleepInSleepiestMinute = currentSleepLog.getLargestSleepInMinute();
+            }
+        }
+
+        SleepyGuardInfo info = new SleepyGuardInfo(sleepiestGuardId, highestSleepTime, sleepiestMinute, timeAsleepInSleepiestMinute);
 
         return info;
     }
