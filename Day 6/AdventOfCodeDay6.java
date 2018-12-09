@@ -129,6 +129,27 @@ public class AdventOfCodeDay6
 
   private static void solveProblem2(ArrayList<Point> pointsList)
   {
-    // TODO
+    int safeAreaTargetDistance = 10000;
+    int totalAreaOfSafeArea = 0;
+    // Get the points for the bounding rectangle
+    for (Point p : new Points(pointsList).getBoundingRectangle().toArray())
+    {
+      // Iterate over all the points to get the distance from the current point
+      int totalDistance = 0;
+      for (Point p2 : pointsList)
+      {
+        totalDistance += p.getManhattanDistanceTo(p2);
+      }
+
+      System.out.println("Total Distance: " + totalDistance);
+      // If this is less than the target distance, add to safe area
+      if (totalDistance < safeAreaTargetDistance)
+      {
+        totalAreaOfSafeArea++;
+      }
+    }
+
+    // Print out safe area size
+    System.out.println("Total size of safe area is: " + totalAreaOfSafeArea);
   }
 }

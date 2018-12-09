@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Collection;
 
 /**
  * Represents a group of points in the Cartesian plane
@@ -12,6 +13,16 @@ public class Points
   public Points()
   {
     mPoints = new ArrayList<Point>();
+  }
+
+  public Points(Collection<Point> collection)
+  {
+    this();
+
+    for (Point p : collection)
+    {
+      addPoint(p);
+    }
   }
 
   public void addPoint(Point p)
