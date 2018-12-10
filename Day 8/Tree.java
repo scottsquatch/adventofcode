@@ -77,4 +77,41 @@ public class Tree
 
     return newNode;
   }
+
+  public int getTreeValue()
+  {
+    return getNodeValue(mRoot);
+  }
+
+  private static int getNodeValue(TreeNode node)
+  {
+    int value = 0;
+    if (node.mChildren.length == 0)
+    {
+      // Sum up metadata
+      for (int metadata : node.mMetadata)
+      {
+        value += metadata;
+      }
+    }
+    else
+    {
+      // The metadata now becomes an "index" with the following special rules:
+      //  - The value is the childIndex + 1
+      //  - If there is not child at the index, it is skipped
+      //  - If the metadata value is 0, then it is skipped
+      //  - Otherwise we use the sum of the node at the index + 1
+      for (int metadata : node.mMetadata)
+      {
+        int childIndex = metadata - 1;
+        if (childIndex > -1 &&
+            childIndex < node.mChildren.length)
+        {
+          value += getNodeValue(node.mChildren[childIndex]);
+        }
+      }
+    }
+
+    return value;
+  }
 }

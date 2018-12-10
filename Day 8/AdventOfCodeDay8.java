@@ -18,8 +18,10 @@ public class AdventOfCodeDay8
       {
         Scanner in = new Scanner(new File(inputFilePath));
 
-        solveProblem1(in);
-        solveProblem2(in);
+        Tree licenseTree = Tree.parseTree(in);
+
+        solveProblem1(licenseTree);
+        solveProblem2(licenseTree);
       }
       catch (FileNotFoundException e)
       {
@@ -28,10 +30,8 @@ public class AdventOfCodeDay8
     }
   }
 
-  private static void solveProblem1(Scanner in)
+  private static void solveProblem1(Tree licenseTree)
   {
-    Tree licenseTree = Tree.parseTree(in);
-
     MetadataSummationVisitor summer = new MetadataSummationVisitor();
 
     licenseTree.walk(summer);
@@ -39,8 +39,8 @@ public class AdventOfCodeDay8
     System.out.println("Sum of all metadata in license file: " + summer.getTotal());
   }
 
-  private static void solveProblem2(Scanner in)
+  private static void solveProblem2(Tree licenseTree)
   {
-    // TODO
+    System.out.println("Tree value is " + licenseTree.getTreeValue());
   }
 }
