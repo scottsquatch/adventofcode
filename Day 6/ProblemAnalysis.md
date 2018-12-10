@@ -34,3 +34,10 @@ public:
 addPoint(Point p1)
 Set<E> getConvexHull()
 Point getLeftMostPoint()
+
+## Problem 2
+### Changes
+Now we want to loop over points of the region see if they are in a safe zone.
+
+To do this we get the sum of the distances to each point in the region, if
+it is below a desired value, then we add in the safe range.
