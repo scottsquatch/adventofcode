@@ -63,3 +63,20 @@ private:
 public:
   void addDependency(Dependency dependency)
   String getOrderToExecute()
+
+## Problem 2
+### Changes
+Each step takes 60 + int(Letter) seconds (i.e. A takes 61 seconds).
+We have help from n workers.
+
+### Approach
+We have to keep track of the workers and the time they will be available.
+We can also restructure to be a simulation based approach:
+- Store the current time in seconds that has passed
+  - Integer should be enough
+- Store the worker using an item and the time they become available
+  - Store as simple array where  index is worker number and value is the time they become available
+  
+
+Start at second 0
+* If there are workers available and instructions available, put an item

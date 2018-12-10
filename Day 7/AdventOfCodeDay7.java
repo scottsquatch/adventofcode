@@ -21,7 +21,8 @@ public class AdventOfCodeDay7
         DependencyGraph graph = readDependencyGraphFromFile(inputFilePath);
 
         solveProblem1(graph);
-        solveProblem2(graph);
+        // refresh graph as it becomes unusable after solving
+        solveProblem2(readDependencyGraphFromFile(inputFilePath));
       }
       catch (FileNotFoundException e)
       {
@@ -57,6 +58,8 @@ public class AdventOfCodeDay7
 
   private static void solveProblem2(DependencyGraph graph)
   {
-    // TODO
+    System.out.println(graph.toString());
+    System.out.println("Seconds to complete the sleigh with 5 workers: " +
+        graph.executeWithWorkers(60, 5).getSecondsTaken());
   }
 }
