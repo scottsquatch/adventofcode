@@ -2,16 +2,16 @@ import java.util.LinkedList;
 
 public class MarbleGame
 {
-    private int[] mPlayers;
+    private long[] mPlayers;
     private int mFinalMarbleScore;
 
     public MarbleGame(int numPlayers, int finalMarbleScore)
     {
-        mPlayers = new int[numPlayers];
+        mPlayers = new long[numPlayers];
         mFinalMarbleScore = finalMarbleScore;
     }
 
-    public int play()
+    public long play()
     {
         LinkedList<Integer> board = new LinkedList<Integer>();
 
@@ -95,8 +95,8 @@ public class MarbleGame
             System.out.println(); */
         }
 
-        int maxScore = Integer.MIN_VALUE;
-        for (int score : mPlayers)
+        long maxScore = -1;
+        for (long score : mPlayers)
         {
             if (score > maxScore)
             {
@@ -105,5 +105,120 @@ public class MarbleGame
         }
 
         return maxScore;
+    }
+
+    public long play_optimized()
+    {
+        Node zero = new Node(0);
+        zero.left = zero;
+        zero.right = zero;
+
+        int currentMarbleValue = 0;
+
+        int currentPlayer = -1;
+
+        // Print board
+        //System.out.println("[-]  (" + currentMarble + ")");
+
+        boolean finalMarblePlaced = false;
+        Node currentMarble = zero;
+        while (currentMarbleValue != mFinalMarbleScore)
+        {
+            currentMarbleValue++;
+            currentPlayer = (currentPlayer + 1) % mPlayers.length;
+
+            if (currentMarbleValue % 23 == 0)
+            {
+                // Go counter clockwise 7 times
+                for (int i = 0; i < 7; i++)
+                {
+                    currentMarble = currentMarble.right;
+                }
+
+                int pointsToAdd = currentMarbleValue + currentMarble.value;
+
+                Node nextMarble = currentMarble.left;
+
+                currentMarble.right.left = currentMarble.left;
+                currentMarble.left = currentMarble.right;
+
+                // Now remove the value
+                currentMarble.right = null;
+                currentMarble.left = null;
+
+                currentMarble = nextMarble;
+
+                // Determine if we have played the final marble
+                //finalMarblePlaced = pointsToAdd >= mFinalMarbleScore;
+
+                mPlayers[currentPlayer] += pointsToAdd;
+
+                /*System.out.println("Player " + (currentPlayer + 1) +" places marble for " + pointsToAdd + " points!");
+                for (int i = 0; i < mPlayers.length; i++)
+                {
+                    System.out.print(i + "->" + mPlayers[i] + " Points   ");
+                }
+                System.out.println();*/
+            }
+            else
+            {
+                // Move one turn clockwise (left) and then insert value
+                Node newNode = new Node(currentMarbleValue);
+
+                currentMarble = currentMarble.left;
+
+                newNode.left = currentMarble.left;
+                newNode.right = currentMarble;
+
+                currentMarble.left.right = newNode;
+                currentMarble.left = newNode;
+
+                currentMarble = newNode;
+            }
+
+            // Print board
+            /*
+            System.out.print("[" + (currentPlayer + 1) + "]");
+            for (int i = 0; i < board.size(); i++)
+            {
+                int marble = board.get(i);
+                System.out.print("  ");
+                if (i == currentMarble)
+                {
+                    System.out.print("(");
+                }
+                System.out.print(marble);
+                if (i == currentMarble)
+                {
+                    System.out.print(")");
+                }
+            }
+            System.out.println(); */
+        }
+
+        long maxScore = -1;
+        for (long score : mPlayers)
+        {
+            if (score > maxScore)
+            {
+                maxScore = score;
+            }
+        }
+
+        return maxScore;
+    }
+}
+
+class Node
+{
+    public Node left;
+    public Node right;
+    public int value;
+
+    public Node(int value)
+    {
+        left = null;
+        right = null;
+        this.value = value;
     }
 }

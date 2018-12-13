@@ -56,13 +56,24 @@ public class AdventOfCodeDay9
             {
                 MarbleGame game = new MarbleGame(Integer.parseInt(configMatcher.group(1)), Integer.parseInt(configMatcher.group(2)));
 
-                System.out.println(config + "; high score is " + game.play());
+                System.out.println(config + "; high score is " + game.play_optimized());
             }
         }
     }
 
     private static void solveProblem2(ArrayList<String> configs)
     {
-        // TODO
+        for (String config : configs)
+        {
+            Matcher configMatcher = GAME_CONFIG_PATTERN.matcher(config);
+
+            if (configMatcher.matches())
+            {
+                MarbleGame game = new MarbleGame(Integer.parseInt(configMatcher.group(1)), 
+                100 * Integer.parseInt(configMatcher.group(2)));
+
+                System.out.println(config + "; high score is " + game.play_optimized());
+            }
+        }
     }
 }
