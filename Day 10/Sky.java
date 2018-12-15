@@ -179,6 +179,7 @@ public class Sky
 		// So just look for the point where the bounding rectangle is increasing
 		long previousArea;
 		long currentArea = Long.MAX_VALUE;
+		int seconds = 0;
 		do
 		{
 			previousArea = currentArea;
@@ -215,9 +216,11 @@ public class Sky
 
 			currentArea = (ymax - ymin + 1) * (xmax - xmin + 1);
 			System.out.println(currentArea);
+			seconds++;
 		} while (currentArea < previousArea);	
 
 		passTime(-1);
+		seconds--;
 		
 		if (writeToFile)
 		{
@@ -227,6 +230,8 @@ public class Sky
 		{
 			print();
 		}
+
+		System.out.println("Seconds passed: " + seconds);
 	}
 }
 
