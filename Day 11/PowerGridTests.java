@@ -9,7 +9,14 @@ public class PowerGridTests
 
   private static void testGetLargestTotalPower()
   {
-    assert("33,45".equals(new PowerGrid(300, 300, 18).getLargestTotalPower(3, 3)));
-    assert("21,61".equals(new PowerGrid(300, 300, 42).getLargestTotalPower(3, 3)));
+    LargestTotalPowerResult result;
+
+    result = new PowerGrid(300, 300, 18).getLargestTotalPower(3, 3);
+    assert("33,45".equals(result.topLeftCoordinate));
+    assert(29 == result.totalPower);
+
+    result = new PowerGrid(300, 300, 42).getLargestTotalPower(3, 3);
+    assert("21,61".equals(result.topLeftCoordinate));
+    assert(30 == result.totalPower);
   }
 }

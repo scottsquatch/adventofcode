@@ -24,7 +24,7 @@ public class PowerGrid
    * Returns the top-left coordinate of the 3x3 section of the grid which has
    * the largest total power. Form is x,y.
    */
-  public String getLargestTotalPower(int gridWidth, int gridHeight)
+  public LargestTotalPowerResult getLargestTotalPower(int gridWidth, int gridHeight)
   {
     int maxPower = Integer.MIN_VALUE;
     int xOfMaxPower = -1;
@@ -47,7 +47,10 @@ public class PowerGrid
       }
     }
 
-    return xOfMaxPower + "," + yOfMaxPower;
+    LargestTotalPowerResult result = new LargestTotalPowerResult();
+    result.totalPower = maxPower;
+    result.topLeftCoordinate = xOfMaxPower + "," + yOfMaxPower;
+    return result;
   }
 
   @Override
@@ -90,4 +93,10 @@ public class PowerGrid
 
     return totalPower;
   }
+}
+
+class LargestTotalPowerResult
+{
+  public int totalPower;
+  public String topLeftCoordinate;
 }
