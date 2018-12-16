@@ -22,4 +22,17 @@ public class Pot
 	{
 		this.isFilled = isFilled;
 	}
+
+	@Override
+	public String toString()
+	{
+		if (isFilled)
+		{
+			return "#";
+		}
+		else
+		{
+			return ".";
+		}
+	}
 }
