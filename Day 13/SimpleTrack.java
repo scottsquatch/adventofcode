@@ -116,13 +116,14 @@ public class SimpleTrack
   public void tick()
   {
     TreeMap<Point, Cart> nextCartMap = new TreeMap<Point, Cart>();
-    System.out.println();
-    System.out.println();
+    // System.out.println();
+    // System.out.println();
+    HashSet<Point> crashPoints = new HashSet<Point>();
     while (!cartMap.isEmpty())
     {
       Map.Entry<Point, Cart> cartMapEntry = cartMap.pollFirstEntry();
-      System.out.println("Working on cart " + cartMapEntry.getValue() +
-        " at position " + cartMapEntry.getKey());
+      // System.out.println("Working on cart " + cartMapEntry.getValue() +
+      //   " at position " + cartMapEntry.getKey());
       Point currentPoint = cartMapEntry.getKey();
       int x = currentPoint.x;
       int y = currentPoint.y;
@@ -205,6 +206,7 @@ public class SimpleTrack
               firstCollisionPoint = newPoint;
             }
 
+            crashPoints.add(newPoint);
             // Remove collising cart
             cartMap.remove(newPoint);
             nextCartMap.remove(newPoint);
@@ -263,6 +265,7 @@ public class SimpleTrack
               firstCollisionPoint = newPoint;
             }
 
+            crashPoints.add(newPoint);
             // Remove collising cart
             cartMap.remove(newPoint);
             nextCartMap.remove(newPoint);
@@ -288,6 +291,16 @@ public class SimpleTrack
     }
 
     cartMap = nextCartMap;
+
+    // Now we need to clean up the crashes
+    for (Point p : crashPoints)
+    {
+      // remove from map
+      cartMap.remove(p);
+
+      // Remove Xs
+      currentTrackState.get(p.y).set(p.x, underlyingTrack.get(p.y).get(p.x));
+    }
   }
 
   public void tick_slow()
@@ -475,5 +488,22 @@ public class SimpleTrack
     // System.out.println(currentTrackState.get(y+1).get(x-1).toString() + currentTrackState.get(y+1).get(x).toString() +currentTrackState.get(y+1).get(x+1).toString());
     // System.out.println();
     // System.out.println();
+  }
+
+  public int getNumberOfCartsLeft()
+  {
+    return cartMap.size();
+  }
+
+  public String getCartLocationsString()
+  {
+    StringBuilder builder = new StringBuilder();
+
+    for (Point p : cartMap.keySet())
+    {
+      builder.append(p + " ");
+    }
+
+    return builder.toString();
   }
 }

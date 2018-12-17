@@ -27,8 +27,8 @@ public class AdventOfCodeDay13
         // String selection = "";
         // Scanner userInput = new Scanner(System.in);
         //
-        System.out.println(track);
-        track.printCarts();
+        // System.out.println(track);
+        // track.printCarts();
         //
         // do
         // {
@@ -48,13 +48,15 @@ public class AdventOfCodeDay13
           track.tick();
           // track.tick_slow();
 
-          System.out.println(track);
-          track.printCarts();
+          // System.out.println(track);
+          // track.printCarts();
           // output.write(track + "\n\n");
 
-        } while (!track.hasCollision());
+        } while (track.getNumberOfCartsLeft() > 1);
 
         System.out.println("First collision point " + track.getFirstCollisionPoint());
+
+        System.out.println("Final cart location: " + track.getCartLocationsString());
 
         input.close();
         // output.close();
