@@ -9,8 +9,15 @@ public class GameMap
 
 	public GameMap(Collection<String> lines)
 	{
+		this(lines, 3);
+	}
+
+	public GameMap(Collection<String> lines, int elvesStartingAP)
+	{
 		map = new CellType[lines.size()][];
 		unitMap = new TreeMap<Location, Unit>();
+		UnitFactory factory = new UnitFactory();
+		factory.setInitialApForElves(elvesStartingAP);
 
 		int row = 0;
 		for (String line : lines)
@@ -27,7 +34,7 @@ public class GameMap
 
 					Location l = new Location(row, col);
 
-					unitMap.put(l, Unit.createUnit(type));
+					unitMap.put(l, factory.createUnit(type));
 				}
 			}
 
@@ -118,5 +125,23 @@ public class GameMap
 		{
 			System.out.println(l.toString() + ": " + unitMap.get(l));
 		}
+	}
+
+	public int getNum(char symbol)
+	{
+		int count = 0;
+
+		for (int row = 0; row < map.length; row++)
+		{
+			for (int col = 0; col < map[row].length; col++)
+			{
+				if (map[row][col].getSymbol() == symbol)
+				{
+					count++;
+				}
+			}
+		}
+
+		return count;
 	}
 }

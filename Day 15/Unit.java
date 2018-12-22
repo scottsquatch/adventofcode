@@ -15,25 +15,6 @@ public abstract class Unit
 		return hp < 1;
 	}
 
-	public static Unit createUnit(CellType type)
-	{
-		switch(type)
-		{
-			case GOBLIN:
-			{
-				return new Goblin();
-			}
-			case ELF:
-			{
-				return new Elf();
-			}
-			default:
-			{
-				throw new IllegalArgumentException("Cell type " + type.getSymbol() + " is not valid");
-			}
-		}
-	}
-
 	public Location getMove(Location currentLocation, GameMap map)
 	{
 		Location to = null;

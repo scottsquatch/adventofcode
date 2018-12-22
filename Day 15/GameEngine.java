@@ -131,4 +131,18 @@ public class GameEngine
     {
         return map.getUnits().firstEntry().getValue().getTeamName(); 
     }
+
+    public int getNumUnits(char unitSymbol)
+    {
+        int num = 0;
+        for (Unit u : map.getUnits().values())
+        {
+            if (u.getSymbol() == unitSymbol)
+            {
+                num++;
+            }
+        }
+
+        return num;
+    }
 }

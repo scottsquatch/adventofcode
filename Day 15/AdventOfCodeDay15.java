@@ -37,12 +37,16 @@ public class AdventOfCodeDay15
 				GameEngine engine = new GameEngine(map);
 
 				engine.playGame(printRounds);
-				int totalHitPoints = engine.getSumOfAllUnitsHealth();
-				int lastFullRound = engine.getFullRounds();
+				
+				// Problem 1 
+				printEngine(engine);
 
-				System.out.println("Combat ends after " + lastFullRound + " full rounds");
-				System.out.println(engine.getWinningTeamName() + " win with "  + totalHitPoints + " total hit points left");
-				System.out.println("Outcome: " + lastFullRound + " * " + totalHitPoints + " = " + ((long)totalHitPoints * lastFullRound));
+				// Problem 2
+				System.out.println("\n\nNow finding the minimum AP to ensure an elf win with no casualties\n");
+				MinimumAPForElvesVictory analyzer = new MinimumAPForElvesVictory(lines);
+				int minAP = analyzer.run(printRounds);
+				System.out.println("Minimum AP needed: " + minAP);
+				printEngine(analyzer.getFinalGameRun());
 
 				input.close();
 			}
@@ -67,6 +71,16 @@ public class AdventOfCodeDay15
 		}
 
 		System.out.println();
+	}
+
+	private static void printEngine(GameEngine engine)
+	{
+		int totalHitPoints = engine.getSumOfAllUnitsHealth();
+		int lastFullRound = engine.getFullRounds();
+
+		System.out.println("Combat ends after " + lastFullRound + " full rounds");
+		System.out.println(engine.getWinningTeamName() + " win with "  + totalHitPoints + " total hit points left");
+		System.out.println("Outcome: " + lastFullRound + " * " + totalHitPoints + " = " + ((long)totalHitPoints * lastFullRound));
 	}
 }
 
