@@ -8,13 +8,18 @@ public class AdventOfCodeDay18
 {
 	public static void main(String[] args)
 	{
-		if (args.length != 1)
+		if (args.length < 1 || args.length > 2)
 		{
-			System.out.println("usage: AdventOfCodeDay18 <input>");
+			System.out.println("usage: AdventOfCodeDay18 <input> [numThreads]");
 		}
 		else
 		{
 			String inputFilePath = args[0];
+			int numThreads = 1;
+			if (args.length > 1)
+			{
+				numThreads = Integer.parseInt(args[1]);
+			}
 			try
 			{
 				ArrayList<String> lines = new ArrayList<String>();
@@ -26,8 +31,8 @@ public class AdventOfCodeDay18
 					lines.add(input.readLine());
 				}
 
-				solveProblem1(lines);
-				solveProblem2(lines);
+				solveProblem1(lines, numThreads);
+				solveProblem2(lines, numThreads);
 
 				input.close();
 			}
@@ -42,7 +47,7 @@ public class AdventOfCodeDay18
 		}
 	}
 
-	private static void solveProblem1(ArrayList<String> lines)
+	private static void solveProblem1(ArrayList<String> lines, int numThreads)
 	{
 		BaseConstructionSimulator sim = new BaseConstructionSimulator(lines.toArray(new String[lines.size()]));
 		System.out.println("Initially");
@@ -50,8 +55,8 @@ public class AdventOfCodeDay18
 
 		for (int i = 0; i < 10; i++)
 		{
-			sim.passMinute();
-			System.out.println("After " + (i + 1) + " minutes:");
+			sim.passMinute(numThreads);
+			// System.out.println("After " + (i + 1) + " minutes:");
 			System.out.println(sim);
 		}
 
@@ -60,9 +65,26 @@ public class AdventOfCodeDay18
 		System.out.println("Num wooded acres: " + numTreeSquares + ", num lumberyards: " + numLumberyards + " for a total resource value of " + (numTreeSquares * numLumberyards));
 	}
 
-	private static void solveProblem2(ArrayList<String> lines)
+	private static void solveProblem2(ArrayList<String> lines, int numThreads)
 	{
-		// TODO
+		BaseConstructionSimulator sim = new BaseConstructionSimulator(lines.toArray(new String[lines.size()]));
+
+		int previousResourceValue = 0;
+		for (long i = 0; i < 1000000000L; i++)
+		{
+			sim.passMinute(numThreads);
+
+			int numTreeSquares = sim.getNum(LumberGridType.TREES);
+			int numLumberyards = sim.getNum(LumberGridType.LUMBERYARD);
+			int resoureceValue = numTreeSquares * numLumberyards;
+			if ((i % 1000) == 0)
+			{
+				System.out.println("After " + (i + 1) + " minutes:");
+				System.out.println("total resource value: " + resoureceValue + ", diff: " + (resoureceValue - previousResourceValue));
+			}
+			previousResourceValue = resoureceValue;
+
+		}
 	}	
 }
 
