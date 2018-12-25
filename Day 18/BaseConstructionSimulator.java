@@ -3,13 +3,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ExecutorService;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.HashSet;;
 
 public class BaseConstructionSimulator
 {
-    CharMap2D map;
+    private CharMap2D map;
+    private long oscillationThreshold;
+    private Hashtable<Long, Integer> oscillationTable;
+
     public BaseConstructionSimulator(String[] lines)
     {
         map = new CharMap2D(lines);
+        oscillationThreshold = 1000;
+        oscillationTable = new Hashtable<Long, Integer>();
     }
 
     public void passMinute()
@@ -78,9 +86,65 @@ public class BaseConstructionSimulator
         map = newMap;
     }
 
+    public int getResourceScore(long minutes, int numThreads)
+    {
+        if (minutes < oscillationThreshold)
+        {
+            // run normal simulation
+            for (long i = 0; i < minutes; i++) { passMinute(numThreads); }
+
+            return getResourceScore();
+        }
+        else 
+        {
+            // Determine if we need to get the oscillation table
+            if (oscillationTable.isEmpty())
+            {
+                Hashtable<Integer, Long> resoureceScoreTable = new Hashtable<Integer, Long>();
+                for (long l = 1; l <= minutes; l++)
+                {
+                    passMinute(numThreads);
+                    // only check every so ofter
+                    if (l % oscillationThreshold == 0)
+                    {
+                        int key = getResourceScore();
+                        System.out.println(l + ": " + key);
+                        long val = l / oscillationThreshold;
+                        if (!resoureceScoreTable.containsKey(key))
+                        {
+                            resoureceScoreTable.put(key, l / oscillationThreshold);
+                        }
+                        else
+                        {
+                            // We found an oscillation, populate osciallationTable
+                            for (int score : resoureceScoreTable.keySet())
+                            {
+                                oscillationTable.put(resoureceScoreTable.get(score) / oscillationThreshold, score);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            long key = (minutes / oscillationThreshold) % oscillationTable.size();
+
+            return oscillationTable.get(key);
+        }
+    }
+
     public int getNum(LumberGridType type)
     {
         return map.getNum(type.getSymbol());
+    }
+
+    public int getResourceScore()
+    {
+        int numTreeSquares = getNum(LumberGridType.TREES);
+        int numLumberyards = getNum(LumberGridType.LUMBERYARD);
+        
+        return numTreeSquares * numLumberyards;
     }
 
     @Override 

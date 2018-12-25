@@ -52,6 +52,7 @@ public class AdventOfCodeDay18
 		BaseConstructionSimulator sim = new BaseConstructionSimulator(lines.toArray(new String[lines.size()]));
 		System.out.println("Initially");
 		System.out.println(sim);
+		System.out.println(sim.getResourceScore());
 
 		for (int i = 0; i < 10; i++)
 		{
@@ -62,7 +63,7 @@ public class AdventOfCodeDay18
 
 		int numTreeSquares = sim.getNum(LumberGridType.TREES);
 		int numLumberyards = sim.getNum(LumberGridType.LUMBERYARD);
-		System.out.println("Num wooded acres: " + numTreeSquares + ", num lumberyards: " + numLumberyards + " for a total resource value of " + (numTreeSquares * numLumberyards));
+		System.out.println("Num wooded acres: " + numTreeSquares + ", num lumberyards: " + numLumberyards + " for a total resource value of " + sim.getResourceScore());
 	}
 
 	private static void solveProblem2(ArrayList<String> lines, int numThreads)
@@ -70,21 +71,23 @@ public class AdventOfCodeDay18
 		BaseConstructionSimulator sim = new BaseConstructionSimulator(lines.toArray(new String[lines.size()]));
 
 		int previousResourceValue = 0;
-		for (long i = 0; i < 1000000000L; i++)
+		// for (long i = 0; i < 1000000000L; i++)
+		for (long i = 1; i <= 100000L; i++)
 		{
 			sim.passMinute(numThreads);
 
-			int numTreeSquares = sim.getNum(LumberGridType.TREES);
-			int numLumberyards = sim.getNum(LumberGridType.LUMBERYARD);
-			int resoureceValue = numTreeSquares * numLumberyards;
+			int resoureceValue = sim.getResourceScore();
 			if ((i % 1000) == 0)
 			{
-				System.out.println("After " + (i + 1) + " minutes:");
-				System.out.println("total resource value: " + resoureceValue + ", diff: " + (resoureceValue - previousResourceValue));
+				// System.out.println("After " + (i) + " minutes:");
+				// System.out.println("total resource value: " + resoureceValue + ", diff: " + (resoureceValue - previousResourceValue));
+				System.out.println(i +  "," + resoureceValue + "," + (resoureceValue - previousResourceValue));
 			}
 			previousResourceValue = resoureceValue;
 
 		}
+
+		System.out.println("Total Resource Value: " + sim.getResourceScore(1000000000L, numThreads));
 	}	
 }
 

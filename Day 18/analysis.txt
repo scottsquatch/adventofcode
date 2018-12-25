@@ -1,0 +1,25 @@
+1000, 3589
+2000, 698
+3000, -3379
+4000, -5304
+5000, 5479
+6000, -2102
+7000, -1914
+
+
+Period is 7000 mninutes:
+1000, 8000, 15000, 22000, ... 1000+a7000
+2000, 9000, 16000, 23000, ... 2000+a7000
+3000, 10000, 17000, 24000, .... 3000+a7000 
+4000, 11000, 18000, 25000, .... 4000 + a7000
+5000, 12000, 19000, 26000, .... 5000 + a7000
+6000, 13000, 20000, 27000, .... 6000 + a7000
+7000, 14000, 21000, 28000, .... 7000 + a7000
+
+Plan:
+Need to determine the first instance of the oscillation, at this point we know the other oscillating values:
+- Create a Hashtable of ninuts -> resource score
+- Run the simulation, save the result
+- If we have a duplicate entry, that means we have found the oscillation
+
+
