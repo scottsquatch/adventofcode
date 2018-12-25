@@ -62,6 +62,11 @@ public class AdventOfCodeDay17
 
 	private static void solveProblem2(ArrayList<String> lines)
 	{
+		Ground g = new Ground(lines.toArray(new String[lines.size()]));
+
+		new WaterflowSimulator(g).simulate();
+
+		System.out.println("Number of tiles with water after spring dries up is " + g.getNum('~'));
 	}	
 }
 
