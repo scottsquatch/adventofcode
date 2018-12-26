@@ -116,5 +116,62 @@ public class CharMap2D
 
 		return builder.toString();
 	}
+
+	@Override
+	public boolean equals(Object other)
+	{
+		if (this == other)
+		{
+			return true;
+		}
+		else if (other == null)
+		{
+			return false;
+		}
+		else if (getClass() != other.getClass())
+		{
+			return false;
+		}
+
+		CharMap2D otherMap = (CharMap2D)other;
+		if (map.length != otherMap.map.length)
+		{
+			return false;
+		}
+
+		for (int y = 0; y < map.length; y++)
+		{
+			if (map[y].length != otherMap.map[y].length)
+			{
+				return false;
+			}
+
+			for (int x = 0; x < map[y].length; x++)
+			{
+				if (map[y][x] != otherMap.map[y][x])
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 27;
+
+		for (int y = 0; y < map.length; y++)
+		{
+			for (int x = 0; x < map[y].length; x++)
+			{
+				hash += 27 * map[y][x];
+			}
+		}
+
+		return hash;
+	}
 }
 					

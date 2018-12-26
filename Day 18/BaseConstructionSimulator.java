@@ -88,50 +88,29 @@ public class BaseConstructionSimulator
 
     public int getResourceScore(long minutes, int numThreads)
     {
-        if (minutes < oscillationThreshold)
+        // Based on Reddit, the pattern cycles. We need to find the cycle and play out the remaining iterations.
+        int cycle = 0;
+        Hashtable<CharMap2D, Integer> maps = new Hashtable<CharMap2D, Integer>();
+        while(!maps.containsKey(map))
         {
-            // run normal simulation
-            for (long i = 0; i < minutes; i++) { passMinute(numThreads); }
-
-            return getResourceScore();
+            System.out.println(map);
+            maps.put(map, cycle++);
+            passMinute(numThreads);
         }
-        else 
+
+        int period = cycle - maps.get(map);
+        System.out.println("Found loop after " + cycle + " cycles. Period is " + period);
+
+        Long remainingIterations = (minutes - cycle) % period;
+
+        System.out.println("Remaining iterations: " + remainingIterations);
+
+        for (long i = 0; i < remainingIterations; i++)
         {
-            // Determine if we need to get the oscillation table
-            if (oscillationTable.isEmpty())
-            {
-                Hashtable<Integer, Long> resoureceScoreTable = new Hashtable<Integer, Long>();
-                for (long l = 1; l <= minutes; l++)
-                {
-                    passMinute(numThreads);
-                    // only check every so ofter
-                    if (l % oscillationThreshold == 0)
-                    {
-                        int key = getResourceScore();
-                        System.out.println(l + ": " + key);
-                        long val = l / oscillationThreshold;
-                        if (!resoureceScoreTable.containsKey(key))
-                        {
-                            resoureceScoreTable.put(key, l / oscillationThreshold);
-                        }
-                        else
-                        {
-                            // We found an oscillation, populate osciallationTable
-                            for (int score : resoureceScoreTable.keySet())
-                            {
-                                oscillationTable.put(resoureceScoreTable.get(score) / oscillationThreshold, score);
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
-            
-            long key = (minutes / oscillationThreshold) % oscillationTable.size();
-
-            return oscillationTable.get(key);
+            passMinute(numThreads);
         }
+
+        return getResourceScore();
     }
 
     public int getNum(LumberGridType type)

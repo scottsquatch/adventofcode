@@ -70,23 +70,6 @@ public class AdventOfCodeDay18
 	{
 		BaseConstructionSimulator sim = new BaseConstructionSimulator(lines.toArray(new String[lines.size()]));
 
-		int previousResourceValue = 0;
-		// for (long i = 0; i < 1000000000L; i++)
-		for (long i = 1; i <= 100000L; i++)
-		{
-			sim.passMinute(numThreads);
-
-			int resoureceValue = sim.getResourceScore();
-			if ((i % 1000) == 0)
-			{
-				// System.out.println("After " + (i) + " minutes:");
-				// System.out.println("total resource value: " + resoureceValue + ", diff: " + (resoureceValue - previousResourceValue));
-				System.out.println(i +  "," + resoureceValue + "," + (resoureceValue - previousResourceValue));
-			}
-			previousResourceValue = resoureceValue;
-
-		}
-
 		System.out.println("Total Resource Value: " + sim.getResourceScore(1000000000L, numThreads));
 	}	
 }
