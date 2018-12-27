@@ -67,7 +67,7 @@ public class AdventOfCodeDay20
 		Point[] pathToFuthestRoom = m.getPathToFurthestRoom();
 
 		System.out.println("Map Regex: " + regex);
-		System.out.println("Largest number of doors to pass through is " + (pathToFuthestRoom.length - 1)	+ " doors.");
+		System.out.println("Largest number of doors to pass through is " + pathToFuthestRoom.length	+ " doors.");
 	}
 
 	private static void solveProblem2(String regex)

@@ -1,0 +1,1 @@
+^EEE(NN|SSS)EEE$

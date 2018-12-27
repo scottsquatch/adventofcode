@@ -77,9 +77,11 @@ public class BaseMap
 		Point[] path = new Point[0];
 		for (Point pNext : g.V())
 		{
+      //System.out.println("Finding shortest path to " + pNext);
 			Point[] shortestPath = finder.pathTo(pNext);
 
-			if (shortestPath.length > path.length)
+			if (shortestPath != null &&
+          shortestPath.length > path.length)
 			{
         path = shortestPath;
 			}
