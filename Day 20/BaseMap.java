@@ -90,6 +90,25 @@ public class BaseMap
     return path;
   }
 
+  public int getNumRoomsWithShortestPathGreaterThanOrEqualTo(int threshold)
+  {
+    ShortestPathFinder finder = new ShortestPathFinder(g, START_POINT);
+		int num = 0;
+		for (Point pNext : g.V())
+		{
+      //System.out.println("Finding shortest path to " + pNext);
+			Point[] shortestPath = finder.pathTo(pNext);
+
+			if (shortestPath != null &&
+          shortestPath.length >= threshold)
+			{
+        num++;
+			}
+		}
+
+    return num;
+  }
+
   @Override
   public String toString()
   {

@@ -72,6 +72,16 @@ public class AdventOfCodeDay20
 
 	private static void solveProblem2(String regex)
 	{
-		// TODO
+		BaseMap m = new BaseMap(regex);
+
+		if (printDebugLogs)
+		{
+			System.out.println(m);
+		}
+
+		int num = m.getNumRoomsWithShortestPathGreaterThanOrEqualTo(1000);
+
+		System.out.println("Number of rooms for which the shortest path goest through at least 1000 doors: "
+			+ num);
 	}
 }
