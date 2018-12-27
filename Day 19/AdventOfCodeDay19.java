@@ -57,9 +57,20 @@ public class AdventOfCodeDay19
 		System.out.println("Value of register 0 -> " + state.getRegisterValue(0));
 	}
 
-	private static void solveProblem2(String[] trainingLines)
+	private static void solveProblem2(String[] lines)
 	{
-		// TODO			
+		WristDeviceEmulator emulator = new WristDeviceEmulator(lines);
+
+		// RegisterState initial = emulator.run();
+		// initial.setRegisterValue(0, 1);
+		RegisterState initial = new RegisterState(1, 0, 0, 0, 0, 0);
+
+		emulator = new WristDeviceEmulator(lines);
+		
+		RegisterState state = emulator.run(initial);
+
+		System.out.println(state);
+		System.out.println("value of register 0 -> " + state.getRegisterValue(0));	
 	}
 }
 

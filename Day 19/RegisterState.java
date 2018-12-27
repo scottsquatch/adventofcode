@@ -3,11 +3,9 @@ public class RegisterState implements Cloneable
 	private static final int REGISTER_SIZE = 6;
 
 	private final int[] registers;
-	private final int instructionPointerRegister;
 
 
-	public RegisterState(int register0, int register1, int register2, int register3, int register4, int register5,
-		int instructionPointerRegister)
+	public RegisterState(int register0, int register1, int register2, int register3, int register4, int register5)
 	{
 		registers = new int[REGISTER_SIZE];
 
@@ -17,8 +15,6 @@ public class RegisterState implements Cloneable
 		registers[3] = register3;
 		registers[4] = register4;
 		registers[5] = register5;
-
-		this.instructionPointerRegister = instructionPointerRegister;
 	}
 
 	public int getRegisterValue(int registerNum)
@@ -35,7 +31,7 @@ public class RegisterState implements Cloneable
 	public Object clone()
 	{
 		return new RegisterState(getRegisterValue(0), getRegisterValue(1), getRegisterValue(2), getRegisterValue(3),
-			getRegisterValue(4), getRegisterValue(5), instructionPointerRegister);
+			getRegisterValue(4), getRegisterValue(5));
 	}
 
 	@Override
@@ -86,5 +82,18 @@ public class RegisterState implements Cloneable
 		}
 
 		return true;
+	}
+
+	@Override 
+	public int hashCode()
+	{
+		int hash = 27;
+
+		for (int r : registers)
+		{
+			hash += 27 * r;
+		}
+
+		return hash;
 	}
 }

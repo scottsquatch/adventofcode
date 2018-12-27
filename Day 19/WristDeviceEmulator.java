@@ -1,8 +1,27 @@
+import java.util.Hashtable;
+
 public class WristDeviceEmulator
 {
     private Instruction[] instructionStack;
     private int ipRegister;
     private int ip;
+    private Hashtable<Integer, JumpConfig> previousAbsoluteJumps;
+
+    class JumpConfig
+    {
+        public int jumpPoint;
+        public RegisterState stateBeforeJump;
+
+        @Override
+        public int hashCode()
+        {
+            int hash = 27;
+            hash += 27 * jumpPoint;
+            hash += 27 * stateBeforeJump.hashCode();
+
+            return hash;
+        }
+    }
 
     public WristDeviceEmulator(String[] lines)
     {
@@ -18,16 +37,23 @@ public class WristDeviceEmulator
         }
     }
 
+
     public RegisterState run()
     {
-        RegisterState state = new RegisterState(0, 0, 0, 0, 0, 0, ipRegister);
+        return run(new RegisterState(0, 0, 0, 0, 0, 0));
+    }
 
-        while (ip >= 0 && ip < instructionStack.length)
-        {
-            state = step(state);
-        }
+    public RegisterState run(RegisterState initialState)
+    {
+	    previousAbsoluteJumps = new Hashtable<Integer, JumpConfig>();
+	    RegisterState state = (RegisterState)initialState.clone();
 
-        return state;
+	    while (ip >= 0 && ip < instructionStack.length)
+	    {
+		    state = step(state);
+	    }
+
+	    return state;
     }
 
     public RegisterState step(RegisterState currentState)
@@ -38,11 +64,21 @@ public class WristDeviceEmulator
         // Update ip Register to ip value
         next.setRegisterValue(ipRegister, ip);
 
-        System.out.print("ip=" + ip + " " + next + " " + instr);
+	//StringBuilder builder = new StringBuilder();
+	//builder.append("ip=" + ip + " " + next + " " + instr);
 
         next = OperationType.applyOperation(instr.getop(), next, instr);
 
-        System.out.println(" " + next);
+	//builder.append(" " + next);
+	//String stateStr = builder.toString();
+	//if (previousStates.contains(stateStr))
+	//{
+		//throw new IllegalArgumentException("Loop detected");
+	//}
+	//else
+	//{
+		//previousStates.add(stateStr);
+	//}
 
         ip = next.getRegisterValue(ipRegister);
 
