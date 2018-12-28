@@ -1,4 +1,5 @@
 import java.util.Hashtable;
+import java.util.HashSet;
 
 public class WristDeviceEmulator
 {
@@ -92,6 +93,61 @@ public class WristDeviceEmulator
         ip++;
 
         return next;
+    }
+
+    public int getSmallestValueForLargestNumberOfInstructions()
+    {
+      numInstructions = 0;
+      previousStates = new Hashtable<Integer, RegisterState>();
+	    RegisterState state = new RegisterState(0, 0, 0, 0, 0, 0);
+
+      HashSet<Integer> previousCriticalValues = new HashSet<Integer>();
+      int previousCriticalValue = -1;
+	    while (ip >= 0 && ip < instructionStack.length)
+	    {
+        Instruction instr = instructionStack[ip];
+        RegisterState next = (RegisterState)state.clone();
+
+        // Update ip Register to ip value
+        next.setRegisterValue(ipRegister, ip);
+
+        // Based on hand analysis:
+        // Instruction 28 is the only time the program references register 0
+        // At this point we are checking the equality of registers 4 and 0, so
+        // the value to halt the program the earliest is the value of register 4 at this point
+        if (ip == 28)
+        {
+          System.out.print(next + " " + instr);
+        }
+
+        next = OperationType.applyOperation(instr.getop(), next, instr);
+
+
+        if (ip == 28)
+        {
+            System.out.println(" " + next);
+
+            int criticalValue = next.getRegisterValue(4);
+            if (previousCriticalValues.contains(criticalValue))
+            {
+              return previousCriticalValue;
+            }
+            else
+            {
+                previousCriticalValues.add(criticalValue);
+                previousCriticalValue = criticalValue;
+            }
+        }
+
+        ip = next.getRegisterValue(ipRegister);
+
+        ip++;
+
+        state = next;
+        numInstructions++;
+	    }
+
+      return -1;
     }
 
     public int getNumInstructions()

@@ -54,6 +54,8 @@ public class AdventOfCodeDay21
 
 	private static void solveProblem2(String[] lines)
 	{
-		// TODO
+		WristDeviceEmulator emulator = new WristDeviceEmulator(lines);
+
+		System.out.println("Lowest number for most instructions: " + emulator.getSmallestValueForLargestNumberOfInstructions());
 	}
 }
