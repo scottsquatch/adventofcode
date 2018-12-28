@@ -1,27 +1,12 @@
 import java.util.Hashtable;
+import java.util.Scanner;
 
 public class WristDeviceEmulator
 {
     private Instruction[] instructionStack;
     private int ipRegister;
     private int ip;
-    private Hashtable<Integer, JumpConfig> previousAbsoluteJumps;
-
-    class JumpConfig
-    {
-        public int jumpPoint;
-        public RegisterState stateBeforeJump;
-
-        @Override
-        public int hashCode()
-        {
-            int hash = 27;
-            hash += 27 * jumpPoint;
-            hash += 27 * stateBeforeJump.hashCode();
-
-            return hash;
-        }
-    }
+    private Scanner in;
 
     public WristDeviceEmulator(String[] lines)
     {
@@ -35,8 +20,14 @@ public class WristDeviceEmulator
         {
             instructionStack[i - 1] = Instruction.parseInstruction(lines[i]);
         }
+
+        in = null;
     }
 
+    public void attachDebugger()
+    {
+      in = new Scanner(System.in);
+    }
 
     public RegisterState run()
     {
@@ -45,7 +36,6 @@ public class WristDeviceEmulator
 
     public RegisterState run(RegisterState initialState)
     {
-	    previousAbsoluteJumps = new Hashtable<Integer, JumpConfig>();
 	    RegisterState state = (RegisterState)initialState.clone();
 
 	    while (ip >= 0 && ip < instructionStack.length)
@@ -64,26 +54,29 @@ public class WristDeviceEmulator
         // Update ip Register to ip value
         next.setRegisterValue(ipRegister, ip);
 
-	//StringBuilder builder = new StringBuilder();
-	//builder.append("ip=" + ip + " " + next + " " + instr);
-
+        StringBuilder builder = new StringBuilder();
+        builder.append("ip=" + ip + " " + next + " " + instr);
         next = OperationType.applyOperation(instr.getop(), next, instr);
 
-	//builder.append(" " + next);
-	//String stateStr = builder.toString();
-	//if (previousStates.contains(stateStr))
-	//{
-		//throw new IllegalArgumentException("Loop detected");
-	//}
-	//else
-	//{
-		//previousStates.add(stateStr);
-	//}
+	      builder.append(" " + next);
 
         ip = next.getRegisterValue(ipRegister);
 
         ip++;
 
+        if (in != null)
+        {
+          System.out.println(builder.toString());
+          String sInput = in.nextLine();
+          String[] split = sInput.split(" ");
+          if (split != null & split.length > 1)
+          {
+            int register = Integer.parseInt(split[0]);
+            int value = Integer.parseInt(split[1]);
+
+            next.setRegisterValue(register, value);
+          }
+        }
         return next;
     }
 }
