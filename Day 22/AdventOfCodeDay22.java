@@ -61,6 +61,16 @@ public class AdventOfCodeDay22
 
 	private static void solveProblem2(int depth, Point t)
 	{
-		// TODO
+		Cave c = new Cave(depth, t);
+
+		ShortestPathFinder pathFinder = new ShortestPathFinder(c, Cave.CAVE_ENTRANCE_POINT, Cave.INITIAL_TOOL,
+				t, Tool.TORCH);
+
+		for (CaveGraphVertex v : pathFinder.getShortestPath())
+		{
+			System.out.println(v);
+		}
+		System.out.println();
+		System.out.println(pathFinder.getCost() + " minutes to rescue the target");
 	}
 }
