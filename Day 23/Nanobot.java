@@ -1,8 +1,8 @@
 public class Nanobot
 {
-  public final long radius;
+  public final int radius;
 
-  public Nanobot(long radius)
+  public Nanobot(int radius)
   {
     this.radius = radius;
   }

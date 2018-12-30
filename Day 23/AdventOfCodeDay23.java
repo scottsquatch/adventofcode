@@ -51,6 +51,8 @@ public class AdventOfCodeDay23
 
 	private static void solveProblem2(String[] lines)
 	{
-		// TODO
+		Field f = new Field(lines);
+
+		System.out.println("The distance to the point covered by the most nanobots from the origin is " + f.getShortestDistanceFromStrongestPoint());
 	}
 }
