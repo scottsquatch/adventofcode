@@ -36,11 +36,17 @@ public class DiseaseSimulation
   {
     while (!army1.allGroupsDead() && !army2.allGroupsDead())
     {
-      System.out.println("Round strt\n-----------");
+      /*System.out.println("Round strt\n-----------");
       printArmyStatus(army1);
-      printArmyStatus(army2);
+      printArmyStatus(army2);*/
       Hashtable<AttackConfig, AttackConfig> targets = targetSelectionPhase();
-      attackPhase(targets);
+      //System.out.println(targets.size());
+      if (targets.isEmpty() ||
+          !attackPhase(targets))
+      {
+        // we have a stand still
+        return new DiseaseSimulationResult("", new ArrayList<Group>());
+      }
     }
 
     Army winningArmy;
@@ -54,6 +60,11 @@ public class DiseaseSimulation
     }
 
     return new DiseaseSimulationResult(winningArmy.name, winningArmy.groups());
+  }
+
+  public void applyBoot(int armyNumber, int amount)
+  {
+    getArmyFromNumber(armyNumber).applyAttackBoot(amount);
   }
 
   public Hashtable<AttackConfig, AttackConfig> targetSelectionPhase()
@@ -74,7 +85,7 @@ public class DiseaseSimulation
       targetSelectOrder.add(new PriorityQueueEntry(g, 1));
     }
 
-    System.out.println("\nStart target selection phase:");
+    //System.out.println("\nStart target selection phase:");
     while (!targetSelectOrder.isEmpty())
     {
       PriorityQueueEntry currentQueueEntry = targetSelectOrder.poll();
@@ -105,10 +116,11 @@ public class DiseaseSimulation
       {
         Group target = potentialEnemies.poll();
         int potentialDamage = current.getDamage(target);
-        System.out.println(getArmyFromNumber(attackingArmyNumber).name + " group " + current.getGroupNumber() + " would deal defending group "
-        + target.getGroupNumber() + " " +  potentialDamage + " damage");
+        //System.out.println(getArmyFromNumber(attackingArmyNumber).name + " group " + current.getGroupNumber() + " would deal defending group "
+        //+ target.getGroupNumber() + " " +  potentialDamage + " damage");
         if (potentialDamage > 0)
         {
+          //System.out.println("Found match for " + potentialDamage + " for " + current + " on " + target);
           availableDefenders.remove(target.getGroupNumber());
           targets.put(new AttackConfig(attackingArmyNumber, current.getGroupNumber()), new AttackConfig(defendingArmyNumber, target.getGroupNumber()));
           break;
@@ -119,8 +131,9 @@ public class DiseaseSimulation
     return targets;
   }
 
-  public void attackPhase(Hashtable<AttackConfig, AttackConfig> targets)
+  public boolean attackPhase(Hashtable<AttackConfig, AttackConfig> targets)
   {
+    boolean damageDone = false;
     PriorityQueue<PriorityQueueEntry> attackOrder = new PriorityQueue<PriorityQueueEntry>(new AttackOrderComparator());
 
     for (Group g : army1.groups())
@@ -133,7 +146,7 @@ public class DiseaseSimulation
       attackOrder.add(new PriorityQueueEntry(g, 1));
     }
 
-    System.out.println("\nStart attack phase:");
+    //System.out.println("\nStart attack phase:");
     while (!attackOrder.isEmpty())
     {
       PriorityQueueEntry currentQueueEntry = attackOrder.poll();
@@ -154,10 +167,16 @@ public class DiseaseSimulation
           int damage = attacker.getDamage(target);
           target.takeDamage(damage);
 
-          System.out.println(getArmyFromNumber(attackingArmyNumber).name + " group " + attacker.getGroupNumber() + " attacks defending group " + target.getGroupNumber() + ", killing " + (unitsBefore - target.numUnits) + " units");
+          if (unitsBefore > target.numUnits)
+          {
+            damageDone = true;
+          }
+          //System.out.println(getArmyFromNumber(attackingArmyNumber).name + " group " + attacker.getGroupNumber() + " attacks defending group " + target.getGroupNumber() + ", killing " + (unitsBefore - target.numUnits) + " units");
         }
       }
     }
+
+    return damageDone;
   }
 
   public Army getArmyFromNumber(int number)

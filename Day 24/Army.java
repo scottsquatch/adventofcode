@@ -70,6 +70,14 @@ public class Army
     return true;
   }
 
+  public void applyAttackBoot(int amount)
+  {
+    for (Group g : groups)
+    {
+      g.attackDamage += amount;
+    }
+  }
+
   @Override
   public String toString()
   {
