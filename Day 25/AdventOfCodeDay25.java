@@ -115,6 +115,6 @@ public class AdventOfCodeDay25
 
 	private static void solveProblem2(String[] lines)
 	{
-		// TODO
+		// No Problem 2
 	}
 }
